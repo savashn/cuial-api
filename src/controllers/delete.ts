@@ -22,6 +22,7 @@ export const message = async (req: Request, res: Response): Promise<void> => {
 	}
 
 	await Message.deleteOne({ _id: req.body.id });
+	await User.updateOne({ _id: req.user.id }, { $inc: { messages: -1 } });
 
 	res.status(204).send();
 };
