@@ -1,41 +1,7 @@
-## express-vercel-mongodb-stack
+### CUIAL
 
-A boilerplate to build serverless API's on Vercel with Express, TypeScript and MongoDB.
+The API of CUIAL, which is a Dead Man's Switch that sends emails to the people you love after you died.
 
-## Installation
+## API
 
-### 0. Clone this repository and install all dependencies
-
-```sh
-git clone https://github.com/savashn/express-vercel-mongodb-stack.git
-cd express-vercel-mongodb-stack
-npm install
-```
-
-### 1. Add your environment variables
-
-Create a `.env` file in the root directory and add your `DB_URI` to connect your database. Don't forget to add `CORS_ORIGIN` too for your frontend app and `JWT_SECRET` for authentication.
-
-### 2. Install Vercel CLI globaly
-
-```sh
-npm i -g vercel
-```
-
-### 3. Login to your Vercel account
-
-```sh
-vercel login
-```
-
-### 4. Finally, RUN:
-
-```sh
-vercel dev
-```
-
-OR
-
-```sh
-npm start
-```
+The frontend source code is accessible from [here](https://github.com/savashn/cuial).

@@ -2,8 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
-import mongoose from 'mongoose';
-import errorHandler from '../src/middlewares/errorHandler';
+import db from '../src/utils/db';
+import getRoutes from '../src/routes/get';
+import postRoutes from '../src/routes/post';
+import putRoutes from '../src/routes/put';
+import deleteRoutes from '../src/routes/delete';
+import errorHandler from '../src/utils/errorHandler';
 
 dotenv.config();
 const app = express();
@@ -19,24 +23,7 @@ app.use(
 	})
 );
 
-const dbConnection = async () => {
-	try {
-		await mongoose.connect(process.env.DB_URI as string, {
-			autoIndex: false,
-			maxPoolSize: 10
-		});
-	} catch (err) {
-		console.log(err);
-		throw err;
-	}
-};
-
-dbConnection();
-
-import getRoutes from '../src/routes/get';
-import postRoutes from '../src/routes/post';
-import putRoutes from '../src/routes/put';
-import deleteRoutes from '../src/routes/delete';
+db();
 
 app.use(getRoutes);
 app.use('/post', postRoutes);

@@ -6,11 +6,12 @@ const validator = (schema: z.ZodTypeAny) => {
 		const result = schema.safeParse(req.body);
 
 		if (!result.success) {
-			res.status(400).json({
-				success: false,
-				message: 'Validation failed',
-				errors: result.error.errors
-			});
+			const err = result.error.errors.map((err) => ({
+				field: err.path.join('.'),
+				message: err.message
+			}));
+
+			res.status(400).json(err);
 			return;
 		}
 

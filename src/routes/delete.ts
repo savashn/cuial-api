@@ -1,18 +1,10 @@
-import { Router, Request, Response } from 'express';
-import User from '../db/user';
+import { Router } from 'express';
 import { auth } from '../middlewares/authenticator';
+import { message, user } from '../controllers/delete';
 
 const router = Router();
 
-router.delete('/user/:username', auth, async (req: Request, res: Response) => {
-	const user = await User.findOneAndDelete({ username: req.params.username });
-
-	if (!user) {
-		res.status(500).send('An error occured while deleting the user');
-		return;
-	}
-
-	res.status(204).send();
-});
+router.delete('/user/:id', auth, user);
+router.delete('/message', auth, message);
 
 export default router;
