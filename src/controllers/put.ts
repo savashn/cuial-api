@@ -43,24 +43,19 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
 		return;
 	}
 
-	try {
-		const record = await Token.findOne({ token });
+	const record = await Token.findOne({ token: token });
 
-		if (!record) {
-			res.status(404).send('Invalid or expired token');
-			return;
-		}
-
-		const newPassword = await bcrypt.hash(req.body.password, 10);
-
-		await User.updateOne({ email: record.email }, { $set: { password: newPassword } });
-		await Token.deleteOne({ token });
-
-		res.status(200).send('Success');
-	} catch (err) {
-		console.log(err);
-		res.status(400).send('Invalid or expired token');
+	if (!record) {
+		res.status(404).send('Invalid or expired token');
+		return;
 	}
+
+	const newPassword = await bcrypt.hash(req.body.password, 10);
+
+	await User.updateOne({ email: record.email }, { $set: { password: newPassword } });
+	await Token.deleteOne({ token: token });
+
+	res.status(200).send('Success');
 };
 
 export const putMessage = async (req: Request, res: Response): Promise<void> => {
@@ -100,6 +95,8 @@ export const putUser = async (req: Request, res: Response): Promise<void> => {
 				password: req.body.password,
 				notification: req.body.notification,
 				confirmation: req.body.confirmation,
+				notificationCounter: req.body.notification,
+				confirmationCounter: req.body.confirmation,
 				updatedAt: new Date()
 			}
 		}

@@ -31,8 +31,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 		email: req.body.email as string,
 		type: 'verify',
 		query: 'account',
-		mailSubject: 'Verify your account',
-		mailText: 'to verify your account'
+		mailSubject: 'Verify Your Account',
+		mailText: 'Please click the button below to verify your CUIAL account.'
 	};
 
 	await sendToken(msg);

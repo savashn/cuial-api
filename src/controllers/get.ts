@@ -46,7 +46,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
 		type: 'renew-password',
 		query: 'token',
 		mailSubject: 'Renew Password',
-		mailText: 'to renew your password'
+		mailText: 'Please click the button below to re-generate your password.'
 	};
 
 	await sendToken(msg);
@@ -74,7 +74,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
 	const token = req.query.account || req.query.living;
 
 	try {
-		const record = await Token.findOne({ token });
+		const record = await Token.findOne({ token: token });
 
 		if (!record) {
 			res.status(404).send('Invalid or expired token');
@@ -84,7 +84,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
 		if (req.query.account) {
 			await User.updateOne({ email: record.email }, { $set: { isVerified: true } });
 
-			await Token.deleteOne({ token });
+			await Token.deleteOne({ token: token });
 
 			res.status(200).send('Account is verified successfully');
 			return;
@@ -100,7 +100,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
 					}
 				}
 			);
-			await Token.deleteOne({ token });
+			await Token.deleteOne({ token: token });
 
 			res.status(200).send('Happy to see you alive');
 			return;
