@@ -46,7 +46,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
 		type: 'renew-password',
 		query: 'token',
 		mailSubject: 'Renew Password',
-		mailText: 'Please click the button below to re-generate your password.'
+		mailText: 'Please click the button below to regenerate your password.'
 	};
 
 	await sendToken(msg);

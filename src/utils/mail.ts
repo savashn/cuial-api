@@ -2,9 +2,9 @@ import { Resend } from 'resend';
 import { generateToken } from './crypto';
 
 const resend = new Resend(process.env.RESEND_KEY);
+const year = new Date().getFullYear();
 
 interface ISendMessage {
-	mailTitle: string;
 	mailTo: string;
 	mailSubject: string;
 	mailText: string;
@@ -18,29 +18,16 @@ interface ISendToken {
 	mailText: string;
 }
 
-export async function sendMessage({
-	mailTitle,
-	mailTo,
-	mailSubject,
-	mailText
-}: ISendMessage): Promise<void> {
+export async function sendMessage({ mailTo, mailSubject, mailText }: ISendMessage): Promise<void> {
 	try {
 		await resend.emails.send({
-			from: `${mailTitle} <noreply@cuial.com>`,
+			from: 'CUIAL <noreply@cuial.com>',
 			to: [mailTo],
 			subject: mailSubject,
 			html: `
-				<!DOCTYPE html>
-				<html>
-				<head>
-				<meta charset="UTF-8">
-				</head>
-				<body>
-					<div style="white-space: pre-wrap; font-size: 14px; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word; margin: 10px 0; text-align: left;">
-						${mailText}
-					</div>
-				</body>
-				</html>
+				<div style="white-space: pre-wrap; font-size: 14px; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word; margin: 10px 0; text-align: left;">
+				${mailText}
+				</div>
 			`
 		});
 	} catch (err) {
@@ -155,7 +142,7 @@ export async function sendToken({
 						<p>${mailText}</p>
 						
 						<div class="button-container">
-							<a href="${verificationLink}" class="verification-button" target="_blank">Verify My Account</a>
+							<a href="${verificationLink}" class="verification-button" target="_blank">${mailSubject}</a>
 						</div>
 						
 						<p>If you can't click the button, you can copy and paste the following link into your browser:</p>
@@ -165,7 +152,7 @@ export async function sendToken({
 					</div>
 					
 					<div class="footer">
-						<p>&copy; 2025 CUIAL. All rights reserved.</p>
+						<p>&copy; ${year} CUIAL - All rights reserved.</p>
 						<p class="note">This email was sent to you by the CUIAL application.</p>
 					</div>
 				</div>
