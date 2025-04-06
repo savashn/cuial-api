@@ -84,7 +84,6 @@ export const message = async (req: Request, res: Response): Promise<void> => {
 	const text = encrypt(req.body.text);
 
 	const message = new Message({
-		title: req.body.title,
 		to: req.body.to,
 		subject: req.body.subject,
 		text: text,

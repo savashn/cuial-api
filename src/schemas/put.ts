@@ -7,10 +7,6 @@ export const password = z.object({
 
 export const putMessageSchema = z.object({
 	id: z.string(),
-	title: z
-		.string()
-		.min(2, 'Title is required')
-		.max(30, 'Title cannot be longer than 30 characters'),
 	to: z.string().email('Invalid email format').min(5, 'Email is required'),
 	subject: z
 		.string()

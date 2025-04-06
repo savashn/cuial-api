@@ -2,6 +2,7 @@ import User from '../db/user';
 import Message from '../db/message';
 import { sendMessage, sendToken } from './mail';
 import { decrypt } from './crypto';
+import Token from '../db/token';
 
 export default async function deadMansSwitch(): Promise<void> {
 	const users = await User.find({
@@ -44,6 +45,7 @@ export default async function deadMansSwitch(): Promise<void> {
 						await sendMessage(msg);
 					}
 
+					await Token.deleteOne({ email: user.email });
 					user.isAlive = false;
 				}
 			}

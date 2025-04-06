@@ -3,6 +3,7 @@ import User from '../db/user';
 import bcrypt from 'bcrypt';
 import Message from '../db/message';
 import Token from '../db/token';
+import { encrypt } from '../utils/crypto';
 
 export const changePassword = async (req: Request, res: Response): Promise<void> => {
 	if (!req.user) {
@@ -64,14 +65,15 @@ export const putMessage = async (req: Request, res: Response): Promise<void> => 
 		return;
 	}
 
+	const encryptedText = encrypt(req.body.text);
+
 	await Message.updateOne(
 		{ _id: req.body.id, userId: req.user.id },
 		{
 			$set: {
-				title: req.body.title,
 				to: req.body.to,
 				subject: req.body.subject,
-				text: req.body.text,
+				text: encryptedText,
 				updatedAt: new Date()
 			}
 		}
