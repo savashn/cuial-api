@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Message from '../db/message';
 import { encrypt } from '../utils/crypto';
-import { sendToken } from '../utils/mail';
+import { sendInformation, sendMessage, sendToken } from '../utils/mail';
 import Contact from '../db/contact';
 
 export const register = async (req: Request, res: Response): Promise<void> => {
@@ -92,7 +92,27 @@ export const message = async (req: Request, res: Response): Promise<void> => {
 
 	await message.save();
 
-	await User.updateOne({ _id: req.user.id }, { $inc: { messages: 1 } });
+	const user = await User.findOneAndUpdate({ _id: req.user.id }, { $inc: { messages: 1 } });
+
+	if (!user) {
+		res.status(404).send('User not found');
+		return;
+	}
+
+	if (req.body.sendInfo) {
+		await sendInformation({
+			mailTo: req.body.to,
+			sender: user.name
+		});
+	}
+
+	if (req.body.sendPreview) {
+		await sendMessage({
+			mailTo: user.email,
+			mailSubject: req.body.subject,
+			mailText: req.body.text
+		});
+	}
 
 	res.status(201).send('Success!');
 };

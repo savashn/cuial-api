@@ -1,7 +1,6 @@
 import { Schema, model, Types } from 'mongoose';
 
 interface IMessage {
-	title: string;
 	to: string;
 	subject: string;
 	text: string;
@@ -10,10 +9,6 @@ interface IMessage {
 
 const messageSchema = new Schema<IMessage>(
 	{
-		title: {
-			type: String,
-			required: true
-		},
 		to: {
 			type: String,
 			required: true

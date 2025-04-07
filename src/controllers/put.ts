@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import Message from '../db/message';
 import Token from '../db/token';
 import { encrypt } from '../utils/crypto';
+import { sendMessage } from '../utils/mail';
 
 export const changePassword = async (req: Request, res: Response): Promise<void> => {
 	if (!req.user) {
@@ -78,6 +79,21 @@ export const putMessage = async (req: Request, res: Response): Promise<void> => 
 			}
 		}
 	);
+
+	if (req.body.sendPreview) {
+		const user = await User.findOne({ _id: req.user.id }).select('email -_id');
+
+		if (!user) {
+			res.status(404).send('Preview message couldn\'t be sent because user not found');
+			return;
+		}
+
+		await sendMessage({
+			mailTo: user.email,
+			mailSubject: req.body.subject,
+			mailText: req.body.text
+		});
+	}
 
 	res.status(200).send('Success');
 };

@@ -17,7 +17,9 @@ export const messageSchema = z.object({
 		.string()
 		.min(2, 'Subject is required')
 		.max(60, 'Subject cannot be longer than 60 characters'),
-	text: z.string().min(2, 'Text is required')
+	text: z.string().min(2, 'Text is required'),
+	sendInfo: z.boolean().default(false),
+	sendPreview: z.boolean().default(false)
 });
 
 export const contactSchema = z.object({
