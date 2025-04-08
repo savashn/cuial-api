@@ -69,9 +69,6 @@ export async function sendMessage({ mailTo, mailSubject, mailText }: ISendMessag
 				<body>
 					<div class="text">${mailText}</div>
 					<br><br><hr><br>
-					<div class="senderInfo">
-					
-					</div>
 					<div class="footer">
 						<p>&copy; ${year} CUIAL - All rights reserved.</p>
 						<p class="note">This is an automated message from CUIAL app. Get in touch with us anytime by clicking <a href='https://cuial.com/contact' target="_blank" style="color: #555;">here.</a></p>

@@ -16,7 +16,7 @@ export default tseslint.config(
         },
         rules: {
             eqeqeq: 'warn',
-            'no-unused-vars': 'error',
+            'no-unused-vars': 'off',
             quotes: ['warn', 'single'],
             'semi': ['error', 'always'],
             'no-undef': 'error',

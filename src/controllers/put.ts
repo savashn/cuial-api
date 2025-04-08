@@ -84,7 +84,7 @@ export const putMessage = async (req: Request, res: Response): Promise<void> => 
 		const user = await User.findOne({ _id: req.user.id }).select('email -_id');
 
 		if (!user) {
-			res.status(404).send('Preview message couldn\'t be sent because user not found');
+			res.status(404).send('Preview message couldn not be sent because user not found');
 			return;
 		}
 
