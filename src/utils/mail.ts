@@ -30,9 +30,54 @@ export async function sendMessage({ mailTo, mailSubject, mailText }: ISendMessag
 			to: [mailTo],
 			subject: mailSubject,
 			html: `
-				<div style="white-space: pre-wrap; font-size: 14px; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word; margin: 10px 0; text-align: left;">
-				${mailText}
-				</div>
+				<!DOCTYPE html>
+				<html lang="en">
+				<head>
+					<meta charset="UTF-8">
+					<meta name="viewport" content="width=device-width, initial-scale=1.0">
+					<title>${mailSubject}</title>
+					<style>
+						body {
+							font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+							margin: 0;
+							padding: 0;
+							line-height: 1.5
+						}
+						.text {
+							white-space: pre-wrap;
+							word-wrap: break-word;
+							overflow-wrap: break-word;
+							margin: 10px 0;
+							max-width: 100%;
+							font-size: 14px;
+							text-align: left;
+						}
+						.footer {
+							background-color: #f5f5f5;
+							padding: 20px;
+							text-align: center;
+							color: #666;
+							font-size: 14px;
+						}
+						.note {
+							font-size: 13px;
+							color: #888;
+							margin-top: 15px;
+						}
+					</style>
+				</head>
+				<body>
+					<div class="text">${mailText}</div>
+					<br><br><hr><br>
+					<div class="senderInfo">
+					
+					</div>
+					<div class="footer">
+						<p>&copy; ${year} CUIAL - All rights reserved.</p>
+						<p class="note">This is an automated message from CUIAL app. Get in touch with us anytime by clicking <a href='https://cuial.com/contact' target="_blank" style="color: #555;">here.</a></p>
+					</div>
+				</body>
+				</html>
 			`
 		});
 	} catch (err) {
@@ -124,7 +169,7 @@ export async function sendInformation({
 					
 					<div class="footer">
 						<p>&copy; ${year} CUIAL - All rights reserved.</p>
-						<p class="note">This email was sent to you automaticly by the CUIAL application. Please do not reply this email. Get in touch with us anytime by clicking <a href='https://cuial.com/contact' target="_blank" style="color: #555;">here.</a></p>
+						<p class="note">This is an automated message from CUIAL app. Get in touch with us anytime by clicking <a href='https://cuial.com/contact' target="_blank" style="color: #555;">here.</a></p>
 					</div>
 				</div>
 			</body>
@@ -251,7 +296,7 @@ export async function sendToken({
 					
 					<div class="footer">
 						<p>&copy; ${year} CUIAL - All rights reserved.</p>
-						<p class="note">This email was sent to you automaticly by the CUIAL application. Please do not reply this email. Get in touch with us anytime by clicking <a href='https://cuial.com/contact' target="_blank" style="color: #555;">here.</a></p>
+						<p class="note">This is an automated message from CUIAL app. Get in touch with us anytime by clicking <a href='https://cuial.com/contact' target="_blank" style="color: #555;">here.</a></p>
 					</div>
 				</div>
 			</body>
