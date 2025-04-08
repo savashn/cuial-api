@@ -13,7 +13,7 @@ export const putMessageSchema = z.object({
 		.min(2, 'Subject is required')
 		.max(60, 'Subject cannot be longer than 60 characters'),
 	text: z.string().min(2, 'Text is required'),
-	sendPreview: z.boolean().default(false)
+	sendPreview: z.boolean().nullable()
 });
 
 export const putUserSchema = z.object({
@@ -21,4 +21,9 @@ export const putUserSchema = z.object({
 	email: z.string().email('Invalid email format'),
 	notification: z.number().int().min(1, 'Must be at least 1 day'),
 	confirmation: z.number().int().min(1, 'Must be at least 1')
+});
+
+export const forgotPasswordSchema = z.object({
+	token: z.string(),
+	password: z.string()
 });

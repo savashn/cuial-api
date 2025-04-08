@@ -85,10 +85,7 @@ export async function sendMessage({ mailTo, mailSubject, mailText }: ISendMessag
 	}
 }
 
-export async function sendInformation({
-	mailTo,
-	sender
-}: ISendInformation): Promise<void> {
+export async function sendInformation({ mailTo, sender }: ISendInformation): Promise<void> {
 	await resend.emails.send({
 		from: 'CUIAL <noreply@cuial.com>',
 		to: mailTo,

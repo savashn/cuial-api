@@ -13,7 +13,7 @@ jest.mock('../utils/mail', () => ({
 	sendMessage: jest.fn()
 }));
 
-describe("Dead Man's Switch", () => {
+describe('Dead Man\'s Switch', () => {
 	beforeAll(async () => {
 		mongoServer = await MongoMemoryServer.create();
 		const uri = mongoServer.getUri();
