@@ -77,44 +77,55 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const message = async (req: Request, res: Response): Promise<void> => {
 	if (!req.user) {
-		res.status(500).send('An error occured while deleting the user');
+		res.status(401).json({
+			message: 'Not authorized'
+		});
 		return;
 	}
 
-	const text = encrypt(req.body.text);
+	try {
+		const text = encrypt(req.body.text);
 
-	const message = new Message({
-		to: req.body.to,
-		subject: req.body.subject,
-		text: text,
-		userId: req.user.id
-	});
+		const message = new Message({
+			to: req.body.to,
+			subject: req.body.subject,
+			text: text,
+			userId: req.user.id
+		});
 
-	await message.save();
+		await message.save();
 
-	const user = await User.findOneAndUpdate({ _id: req.user.id }, { $inc: { messages: 1 } });
+		const user = await User.findOneAndUpdate({ _id: req.user.id }, { $inc: { messages: 1 } });
 
-	if (!user) {
-		res.status(404).send('User not found');
-		return;
-	}
+		if (!user) {
+			res.status(404).json({
+				message: 'User not found'
+			});
+			return;
+		}
 
-	if (req.body.sendInfo) {
-		await sendInformation({
-			mailTo: req.body.to,
-			sender: user.name
+		if (req.body.sendInfo) {
+			await sendInformation({
+				mailTo: req.body.to,
+				sender: user.name
+			});
+		}
+
+		if (req.body.sendPreview) {
+			await sendMessage({
+				mailTo: user.email,
+				mailSubject: req.body.subject,
+				mailText: req.body.text
+			});
+		}
+
+		res.status(201).send('Success!');
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({
+			message: `An error occured: ${err}`
 		});
 	}
-
-	if (req.body.sendPreview) {
-		await sendMessage({
-			mailTo: user.email,
-			mailSubject: req.body.subject,
-			mailText: req.body.text
-		});
-	}
-
-	res.status(201).send('Success!');
 };
 
 export const contact = async (req: Request, res: Response): Promise<void> => {

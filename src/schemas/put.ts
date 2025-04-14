@@ -13,7 +13,7 @@ export const putMessageSchema = z.object({
 		.min(2, 'Subject is required')
 		.max(60, 'Subject cannot be longer than 60 characters'),
 	text: z.string().min(2, 'Text is required'),
-	sendPreview: z.boolean().nullable()
+	sendPreview: z.boolean().default(false)
 });
 
 export const putUserSchema = z.object({

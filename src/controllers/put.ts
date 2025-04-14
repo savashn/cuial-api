@@ -62,7 +62,9 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
 
 export const putMessage = async (req: Request, res: Response): Promise<void> => {
 	if (!req.user) {
-		res.status(401).send('Not allowed');
+		res.status(401).json({
+			message: 'Not allowed'
+		});
 		return;
 	}
 
@@ -84,7 +86,9 @@ export const putMessage = async (req: Request, res: Response): Promise<void> => 
 		const user = await User.findOne({ _id: req.user.id }).select('email -_id');
 
 		if (!user) {
-			res.status(404).send('Preview message couldn not be sent because user not found');
+			res.status(404).json({
+				message: 'Preview message couldn not be sent because user not found'
+			});
 			return;
 		}
 
@@ -100,7 +104,9 @@ export const putMessage = async (req: Request, res: Response): Promise<void> => 
 
 export const putUser = async (req: Request, res: Response): Promise<void> => {
 	if (!req.user || req.user.id !== req.params.user) {
-		res.status(401).send('Not allowed');
+		res.status(401).json({
+			message: 'Not allowed'
+		});
 		return;
 	}
 
