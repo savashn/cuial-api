@@ -24,6 +24,11 @@ interface ISendToken {
 }
 
 export async function sendMessage({ mailTo, mailSubject, mailText }: ISendMessage): Promise<void> {
+	const htmlText = mailText
+		.split(/\n\s*\n/)
+		.map((p) => `<p>${p.trim()}</p>`)
+		.join('');
+
 	try {
 		await resend.emails.send({
 			from: 'CUIAL <noreply@cuial.com>',
@@ -33,46 +38,48 @@ export async function sendMessage({ mailTo, mailSubject, mailText }: ISendMessag
 				<!DOCTYPE html>
 				<html lang="en">
 				<head>
-					<meta charset="UTF-8">
-					<meta name="viewport" content="width=device-width, initial-scale=1.0">
-					<title>${mailSubject}</title>
-					<style>
-						body {
-							font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-							margin: 0;
-							padding: 0;
-							line-height: 1.5
-						}
-						.text {
-							white-space: pre-wrap;
-							word-wrap: break-word;
-							overflow-wrap: break-word;
-							margin: 10px 0;
-							max-width: 100%;
-							font-size: 14px;
-							text-align: left;
-						}
-						.footer {
-							background-color: #f5f5f5;
-							padding: 20px;
-							text-align: center;
-							color: #666;
-							font-size: 14px;
-						}
-						.note {
-							font-size: 13px;
-							color: #888;
-							margin-top: 15px;
-						}
-					</style>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>${mailSubject}</title>
+				<style>
+					body {
+						font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+						margin: 0;
+						padding: 0;
+					}
+					.text {
+						white-space: normal;
+						max-width: 100%;
+						font-size: 14px;
+						text-align: left;
+						line-height: 1.6;
+					}
+					.text p {
+						margin-bottom: 0.4rem;
+					}
+					.footer {
+						background-color: #f5f5f5;
+						padding: 20px;
+						text-align: center;
+						color: #666;
+						font-size: 14px;
+					}
+					.note {
+						font-size: 13px;
+						color: #888;
+						margin-top: 15px;
+					}
+				</style>
 				</head>
 				<body>
-					<div class="text">${mailText}</div>
-					<br><br><hr><br>
-					<div class="footer">
-						<p>&copy; ${year} CUIAL - All rights reserved.</p>
-						<p class="note">This is an automated message from CUIAL app. Get in touch with us anytime by clicking <a href='https://cuial.com/contact' target="_blank" style="color: #555;">here.</a></p>
-					</div>
+				<div class="text">
+					${htmlText}
+				</div>
+				<br><br><hr><br>
+				<div class="footer">
+					<p>&copy; ${year} CUIAL - All rights reserved.</p>
+					<p class="note">This is an automated message from CUIAL app. Get in touch with us anytime by clicking <a href='https://cuial.com/contact' target="_blank" style="color: #555;">here.</a></p>
+				</div>
 				</body>
 				</html>
 			`
@@ -99,7 +106,6 @@ export async function sendInformation({ mailTo, sender }: ISendInformation): Pro
 						font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 						margin: 0;
 						padding: 0;
-						background-color: #f9f9f9;
 						color: #333;
 					}
 					.container {
@@ -111,12 +117,12 @@ export async function sendInformation({ mailTo, sender }: ISendInformation): Pro
 						box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 					}
 					.header {
-						background: linear-gradient(to bottom, rgba(37, 49, 51, 1), rgba(255, 255, 255, 0));
+						background: linear-gradient(to bottom, rgba(37, 49, 51, 0.8), rgba(255, 255, 255, 0));
 						padding: 30px 20px;
 						text-align: center;
 					}
 					.header-text {
-						color: #ffffff;
+						color: #ffffff !important;
 						font-size: 24px;
 						font-weight: bold;
 						margin: 0;
@@ -158,7 +164,8 @@ export async function sendInformation({ mailTo, sender }: ISendInformation): Pro
 						<p>Hello,</p>
 						<p>${sender} left a death message to you and wanted you to know about it. We will deliver it to your mailbox (${mailTo}) when he/she is gone.</p>
 						
-						<p>Sincerely,<br>The CUIAL App</p>
+						<p>Sincerely,</p>
+						<p>The CUIAL App</p>
 					</div>
 					
 					<div class="footer">
@@ -212,12 +219,12 @@ export async function sendToken({
 						box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 					}
 					.header {
-						background: linear-gradient(to bottom, rgba(37, 49, 51, 1), rgba(255, 255, 255, 0));
+						background: linear-gradient(to bottom, rgba(37, 49, 51, 0.8), rgba(255, 255, 255, 0));
 						padding: 30px 20px;
 						text-align: center;
 					}
 					.header-text {
-						color: #ffffff;
+						color: #ffffff !important;
 						font-size: 24px;
 						font-weight: bold;
 						margin: 0;
@@ -285,7 +292,8 @@ export async function sendToken({
 						<p>If you can't click the button, you can copy and paste the following link into your browser:</p>
 						<p style="word-break: break-all; font-size: 14px; color: #555;">${verificationLink}</p>
 						
-						<p>Sincerely,<br>The CUIAL App</p>
+						<p>Sincerely,</p>
+						<p>The CUIAL App</p>
 					</div>
 					
 					<div class="footer">
